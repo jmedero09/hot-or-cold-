@@ -3,13 +3,53 @@ $(document).ready(function(){
 	'use strict'
 	/*--- Display information modal box ---*/
   	$(".what").click(function(){
+    	
     	$(".overlay").fadeIn(1000);
 
   	});
 
   	/*--- Hide information modal box ---*/
   	$("a.close").click(function(){
+  		
   		$(".overlay").fadeOut(1000);
+  	});
+  	//When the user clicks the button with the id of guessButton 
+  	//this will
+	$('#guessButton').click(function(event){
+	  		
+			event.preventDefault();
+
+	  		var input = $('#userGuess').val();
+
+	  		if(validateNumber(input) === true && (validateNumberQty(input) === true)){
+	  			
+				validInput(input);
+
+	  			userGuess(input);
+
+				//alert("This is your array:"+ previousGuess);
+			}
+	});  	
+
+  	/*--- Reset set everything and creat new random number ---*/ 
+  	$(".new").click(function(){
+
+  		previousGuess = [];
+
+  		counter = 0;
+
+  		secretNumber = Math.floor((Math.random() * 100) + 1);
+
+  		$('#count').text(counter);
+
+  		$('#guessList > li').remove();
+
+  		feedback("Make your Guess!")
+
+
+  		//alert("your array"+previousGuess+" "+counter+" "+" "+secretNumber);
+
+
   	});
 
 	var secretNumber = Math.floor((Math.random() * 100) + 1); //Math.floor((Math.random() * 100) + 1);
@@ -50,9 +90,8 @@ $(document).ready(function(){
 			$('#userGuess').attr("placeholder", "Enter Your Guess");
 
 			return true;		
-		}
-		else{
-			
+		} else{
+
 			alert("please choose a number between zero and 100");
 			
 			$('#userGuess').val("");
@@ -84,11 +123,13 @@ $(document).ready(function(){
 
 	function inncarmentCounter(){
 
-		 counter++;
+		counter = counter + 1;
 		$('#count').text(counter);
+
 	}
 
 	function validInput(userInput){
+		
 		if(userInput === ""){
 
 			userInput = 0;
@@ -106,6 +147,9 @@ $(document).ready(function(){
 			appendToList(userInput);
 
 			inncarmentCounter(userInput);
+
+
+
 	}
 
 	function userGuess(userGuess){
@@ -138,32 +182,11 @@ $(document).ready(function(){
 
 		} else {
 
-			alert("HEY YOU GOT IT CONGRATS YOU LITTLE MIND READER");
+			secretNumber = Math.floor((Math.random() * 100) + 1);
+
+			return feedback("HEY YOU WON CLICK NEW GAME TO START ANOTHER GAME ");
 		}
 	}
-
-
-	$('#guessButton').click(function(event){
-	  		
-			event.preventDefault();
-
-	  		var input = $('#userGuess').val();
-
-	  		if(validateNumber(input) === true && (validateNumberQty(input) === true)){
-	  			
-				validInput(input);
-
-	  			userGuess(input);
-
-	  			
-	  			
-	  
-//alert("This is your array:"+ previousGuess);
-//prompt(secretNumber);
-			}
-
-	});
-
 
 });
 
