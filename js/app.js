@@ -13,6 +13,10 @@ $(document).ready(function(){
   	});
 
 	var secretNumber = Math.floor((Math.random() * 100) + 1); //Math.floor((Math.random() * 100) + 1);
+	
+	var previousGuess = [];
+
+	var counter = 0;
 
 	function validateNumber(userInput){
 
@@ -38,7 +42,7 @@ $(document).ready(function(){
 	}
 
 	function validateNumberQty(userInput){
-
+		// i use this to check to make sure the user does not put a number over 100
 		if(userInput <= 100){
 			
 			$('#userGuess').val("");
@@ -61,7 +65,15 @@ $(document).ready(function(){
 	}
 
 	function appendToList(number){
+
 		$('#guessList').append('<li>'+ number + '</li>');
+
+	}
+	function pushToArray(number){
+
+		previousGuess.push(number);
+
+//console.log("......."+previousGuess);
 	}
 
 	function feedback(message){
@@ -70,13 +82,39 @@ $(document).ready(function(){
 
 	}
 
+	function inncarmentCounter(){
+
+		 counter++;
+		$('#count').text(counter);
+	}
+
+	function validInput(userInput){
+		if(userInput === ""){
+
+			userInput = 0;
+		}
+
+		for(var i = 0;i < previousGuess.length; i++){
+			
+			if(previousGuess[i] === userInput){
+
+				return alert('chill boy you already used that number');
+			}
+		}				
+			pushToArray(userInput);
+
+			appendToList(userInput);
+
+			inncarmentCounter(userInput);
+	}
+
 	function userGuess(userGuess){
 	  					
 		var feedBack = Math.abs(secretNumber-userGuess);
 
-		console.log(feedBack);
+		//console.log(feedBack);
 
-		console.log("Random Number " + secretNumber);
+		//console.log("Random Number " + secretNumber);
 
 		if(feedBack > 50) {
 
@@ -104,19 +142,24 @@ $(document).ready(function(){
 		}
 	}
 
-	//userGuess(secretNumber,35);
 
 	$('#guessButton').click(function(event){
 	  		
 			event.preventDefault();
 
 	  		var input = $('#userGuess').val();
-	  		//alert(x);
-	  		//console.log(x);	
-	  		if(validateNumber(input)===true && (validateNumberQty(input) === true)){
+
+	  		if(validateNumber(input) === true && (validateNumberQty(input) === true)){
+	  			
+				validInput(input);
+
 	  			userGuess(input);
-	  			appendToList(input);
-	  			//prompt(secretNumber);
+
+	  			
+	  			
+	  
+//alert("This is your array:"+ previousGuess);
+//prompt(secretNumber);
 			}
 
 	});
