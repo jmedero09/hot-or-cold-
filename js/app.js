@@ -21,14 +21,10 @@ $(document).ready(function(){
 
 	  		var input = $('#userGuess').val();
 
-	  		if(validateNumber(input) === true && (validateNumberQty(input) === true)){
-	  			
-				validInput(input);
-
+	  		if(validInput(input)){
+	  			add(input);
 	  			userGuess(input);
-
-				//alert("This is your array:"+ previousGuess);
-			}
+	  		}
 	});  	
 
   	/*--- Reset set everything and creat new random number ---*/ 
@@ -58,100 +54,6 @@ $(document).ready(function(){
 
 	var counter = 0;
 
-	function validateNumber(userInput){
-
-		//This is how i check to make sure that the number entered is a number 
-		if(userInput % 1 === 0){
-
-			$('#userGuess').val("");
-
-			$('#userGuess').attr("placeholder", "Enter Your Guess");
-
-			return true;
-
-		} else {
-			
-			alert("sike thats not a number please input a number ");
-			
-			$('#userGuess').val("");
-
-			$('#userGuess').attr("placeholder", "Enter Your Guess");
-
-			return false;
-		}
-	}
-
-	function validateNumberQty(userInput){
-		// i use this to check to make sure the user does not put a number over 100
-		if(userInput <= 100){
-			
-			$('#userGuess').val("");
-
-			$('#userGuess').attr("placeholder", "Enter Your Guess");
-
-			return true;		
-		} else{
-
-			alert("please choose a number between zero and 100");
-			
-			$('#userGuess').val("");
-
-			$('#userGuess').attr("placeholder", "Enter Your Guess");
-
-			return false;
-		}
-
-	}
-
-	function appendToList(number){
-
-		$('#guessList').append('<li>'+ number + '</li>');
-
-	}
-	function pushToArray(number){
-
-		previousGuess.push(number);
-
-//console.log("......."+previousGuess);
-	}
-
-	function feedback(message){
-
-		$('#feedback').text(message);
-
-	}
-
-	function inncarmentCounter(){
-
-		counter = counter + 1;
-		$('#count').text(counter);
-
-	}
-
-	function validInput(userInput){
-		
-		if(userInput === ""){
-
-			userInput = 0;
-		}
-
-		for(var i = 0;i < previousGuess.length; i++){
-			
-			if(previousGuess[i] === userInput){
-
-				return alert('chill boy you already used that number');
-			}
-		}				
-			pushToArray(userInput);
-
-			appendToList(userInput);
-
-			inncarmentCounter(userInput);
-
-
-
-	}
-
 	function userGuess(userGuess){
 	  					
 		var feedBack = Math.abs(secretNumber-userGuess);
@@ -159,8 +61,10 @@ $(document).ready(function(){
 		//console.log(feedBack);
 
 		//console.log("Random Number " + secretNumber);
+		if(feedBack ===0 ){
 
-		if(feedBack > 50) {
+			 feedback("HEY YOU WON CLICK NEW GAME TO START ANOTHER GAME ");
+		} else if(feedBack > 50) {
 
 			feedback("Ice Cold");
 
@@ -180,13 +84,70 @@ $(document).ready(function(){
 
 			feedback("OMG YOUR ON FIRE");
 
-		} else {
-
-			secretNumber = Math.floor((Math.random() * 100) + 1);
-
-			return feedback("HEY YOU WON CLICK NEW GAME TO START ANOTHER GAME ");
-		}
+		} 
 	}
+		function validInput(userInput){
+		
+			if(userInput === ""){
+
+				userInput = 0;
+			}
+
+			for(var i = 0;i < previousGuess.length; i++){
+				
+				if(previousGuess[i] === userInput){
+
+					return alert('chill boy you already used that number');
+				}
+
+			}//end of for loop				
+						//This is how i check to make sure that the number entered is a number 
+			if((userInput % 1 === 0) && (userInput >= 0) && (userInput<=100)){
+
+				$('#userGuess').val("");
+
+				$('#userGuess').attr("placeholder", "Enter Your Guess");
+
+				return true;
+
+			} else if(userInput % 1 !== 0){
+				
+				alert("sike thats not a number please input a number ");
+				
+				$('#userGuess').val("");
+
+				$('#userGuess').attr("placeholder", "Enter Your Guess");
+
+				return false;
+
+			} else if(userInput < 0 || userInput>100){
+
+				alert("Please put in a number that is between 0 and 100");
+				
+				$('#userGuess').val("");
+
+				$('#userGuess').attr("placeholder", "Enter Your Guess");
+
+				return false;
+			}						
+	}
+
+	function feedback(message){
+
+		$('#feedback').text(message);
+
+	}
+
+	function add(userInput){
+		previousGuess.push(userInput);
+		counter = counter + 1;
+		$('#guessList').append('<li>'+ userInput + '</li>');
+		$('#count').text(counter);
+
+	}
+
+
+
 
 });
 
