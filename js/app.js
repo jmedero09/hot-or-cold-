@@ -21,7 +21,11 @@ $(document).ready(function(){
 
 	  		var input = $('#userGuess').val();
 
-	  		if(validInput(input)){
+	  		if(input === ""){
+	  			input = $('#userGuess').val(0);
+	  		}
+
+	  		else if(validInput(input)){
 	  			add(input);
 	  			userGuess(input);
 	  		}
